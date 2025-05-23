@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>One Influencer</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-cyan-100">
+    <nav class="bg-gray-800 px-4 py-4">
+        <ul class="flex space-x-4">
+            <li class="text-white font-bold text-2xl cursor-pointer">IESCP</li>
+            <li class="text-gray-400 hover:text-white cursor-pointer"><a href="/influsearch/{{previnflu}}">Go Back</a></li>
+            <!-- <li class="text-gray-400 hover:text-white cursor-pointer underline">About</li>
+            <li class="text-gray-400 hover:text-white cursor-pointer">Posts</li>
+            <li class="text-gray-400 hover:text-white cursor-pointer">Followers</li>
+            <li class="text-gray-400 hover:text-white cursor-pointer">Following</li> -->
+            <button class="ml-auto rounded-lg px-2 bg-white hover:text-white font-bold hover:bg-black active:bg-gray-800 ring-5 ring-black outline-none focus:outline-none focus:ring focus:ring-white"><a href="/">Log Out</a></button>
+        </ul>
+    </nav>
+    <div class="ml-6 space-y-3 mt-4">
+        <p class="text-6xl font-sans">{{ influ.name }}</p>
+        <button class="ml-auto rounded-lg px-4 py-2 bg-white hover:text-white font-bold hover:bg-black active:bg-gray-800 ring-5 ring-black outline-none focus:outline-none focus:ring focus:ring-white">Followers {{fl | length}}</button>
+        <button class="ml-2 rounded-lg px-4 py-2 bg-white hover:text-white font-bold hover:bg-black active:bg-gray-800 ring-5 ring-black outline-none focus:outline-none focus:ring focus:ring-white">Following {{fo | length}}</button>
+        {% if l==0 %}
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded"><a href="/follow/{{influ.id}}/{{previnflu}}">Follow</a></button>
+        
+        {% else %}
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded"><a href="/unfollow/{{influ.id}}/{{previnflu}}">UnFollow</a></button>
+        {% endif %}
+        <p class="text-xl">Posts:</p>
+    </div>
+    <div class="container mx-auto mt-8 px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for post in posts %}
+            <div class="bg-white shadow-md rounded-lg p-4">
+                {% if post.media_type == 'Photo' %}
+                <img src="/{{ post.media_url }}" alt="Post Media" class="w-full h-48 object-cover rounded-t-lg">
+                {% else %}
+                <video class="w-full h-48 object-cover rounded-t-lg" controls>
+                    <source src="/{{ post.media_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                {% endif %}
+                <div class="p-4">
+                    <p class="text-gray-700">{{ post.description }}</p>
+                    <p class="text-gray-700">Likes: {{ post.likes }} <button class="ml-2 rounded-lg px-4 py-2 bg-white hover:text-white font-bold hover:bg-black active:bg-gray-800 ring-5 ring-black outline-none focus:outline-none focus:ring focus:ring-white"><a href="/like/{{post.id}}/{{influ.id}}/{{previnflu}}">Like <i class="bi bi-hand-thumbs-up"></i></a></button> </p>
+                    <p class="text-gray-700">Comments: {{ post.comments }}</p>
+                    <!-- <div class="mt-4 flex space-x-2">
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit</button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Delete</button>
+                    </div> -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
